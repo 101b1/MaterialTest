@@ -9,8 +9,25 @@
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">
-        "This app is made by
+    <string name="about_string">
+        "       This app is made by
         I Love It Hard Society
         2017"</string>
+
+    <string-array name="settings_list">
+        <item>Theme</item>
+        <item>Download directory</item>
+        <item>Language</item>
+        <item>Logout</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="home_string">Welcome to the home page!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="dialog_fragment">Dialogs here</string>
+
+    <string name="friends_fragment">Friends here</string>
 </resources>

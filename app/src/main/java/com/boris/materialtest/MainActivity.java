@@ -1,5 +1,6 @@
 package com.boris.materialtest;
 
+import android.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.Activity;
@@ -28,24 +29,53 @@ public class MainActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
-            viewToast(position);
+            setFragment(position);
         }
     }
 
-    private void viewToast(int position){
-        String[] message;
+    private void setFragment(int position){
+        /*String[] message;
         message = getResources().getStringArray(R.array.drawer_items);
         Toast.makeText(this, "Pressed"+message[position], Toast.LENGTH_SHORT).show();
+        */
+        Fragment newFragment;
+        switch (position) {
+            case 0:
+                newFragment = new HomeFragment();
+                break;
+            case 1:
+                newFragment = new VkDialogFragment();
+                break;
+            case 2:
+                newFragment = new VkFriendsFragment();
+                break;
+            case 3:
+                newFragment = new SettingsFragment();
+                break;
+            case 4:
+                newFragment = new AboutFragment();
+                break;
+            default:
+                newFragment = new HomeFragment();
+        }
 
-    }
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, newFragment);
+        ft.addToBackStack(null);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+
+        }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         drawerItems = getResources().getStringArray(R.array.drawer_items);
         drawerList = (ListView)findViewById(R.id.drawer);
-        drawerList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, drawerItems));
+        drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerItems));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
-        setContentView(R.layout.activity_main);
+
     }
 }
