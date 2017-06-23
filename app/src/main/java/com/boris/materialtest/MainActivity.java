@@ -1,6 +1,7 @@
 package com.boris.materialtest;
 
 import android.app.DialogFragment;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.Activity;
@@ -22,6 +23,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+    public static final String PREFS_FILE = "MaterialTestPrefs";
     private String[] drawerItems;
     private ListView drawerList;
 
@@ -64,7 +66,23 @@ public class MainActivity extends Activity {
         ft.addToBackStack(null);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
+        changeBarTitle(position);
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        drawerLayout.closeDrawer(drawerList);
 
+        }
+
+        private void changeBarTitle(int position)
+        {
+            String title;
+            if (position==0)
+            {
+                title = getResources().getString(R.string.app_name);
+            } else
+            {
+                title = drawerItems[position];
+            }
+            getActionBar().setTitle(title);
         }
 
 
@@ -72,6 +90,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SharedPreferences prefs = getSharedPreferences(PREFS_FILE,0);
+        setTheme(prefs.getInt("Theme",0));
         drawerItems = getResources().getStringArray(R.array.drawer_items);
         drawerList = (ListView)findViewById(R.id.drawer);
         drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerItems));

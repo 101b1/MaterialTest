@@ -1,24 +1,24 @@
 <resources>
     <string name="app_name">Material Test</string>
     <string-array name="drawer_items">
-        <item>Home</item>
-        <item>Dialog list</item>
-        <item>Friend list</item>
-        <item>Preferences</item>
-        <item>About</item>
+        <item>Домашняя</item>
+        <item>Список диалогов</item>
+        <item>Список друзей</item>
+        <item>Настройки</item>
+        <item>О нас</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="about_string">
-        "       This app is made by
-        I Love It Hard Society
+        "       Это приложение было разработано
+        сообществом I Love It Hard
         2017"</string>
 
     <string-array name="settings_list">
-        <item>Theme</item>
-        <item>Download directory</item>
-        <item>Language</item>
-        <item>Logout</item>
+        <item>Тема</item>
+        <item>Путь загрузки</item>
+        <item>Язык</item>
+        <item>Выход</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
