@@ -30,6 +30,8 @@ public class MainActivity extends Activity {
     private String[] drawerItems;
     private ListView drawerList;
     private Locale currentLocale;
+    private SharedPreferences sharedPreferences;
+    private preferencesChangeListener prefListener;
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener{
         @Override
@@ -89,8 +91,7 @@ public class MainActivity extends Activity {
         getActionBar().setTitle(title);
     }
 
-    private SharedPreferences.OnSharedPreferenceChangeListener preferencesChangeListener =
-            new SharedPreferences.OnSharedPreferenceChangeListener() {
+    private class preferencesChangeListener implements SharedPreferences.OnSharedPreferenceChangeListener {
                 @Override
                 public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                     preferenceChanged = true;
@@ -104,18 +105,20 @@ public class MainActivity extends Activity {
                         setTheme(sharedPreferences);
                     }
                 }
-            };
+            }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences prefs = getSharedPreferences(PREFS_FILE,0);
+        
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(preferencesChangeListener);
-        setTheme(prefs.getInt("Theme",0));
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        prefListener = new preferencesChangeListener();
+        sharedPreferences.registerOnSharedPreferenceChangeListener(prefListener);
+
+        setTheme(sharedPreferences.getInt("Theme",0));
         drawerItems = getResources().getStringArray(R.array.drawer_items);
         drawerList = (ListView)findViewById(R.id.drawer);
         drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerItems));
@@ -123,8 +126,6 @@ public class MainActivity extends Activity {
 
 
     }
-
-
 
     private void setLanguage(SharedPreferences preferences)
     {
@@ -141,6 +142,7 @@ public class MainActivity extends Activity {
 
     private void  setTheme(SharedPreferences preferences)
     {
-
+        Intent refresh = new Intent(this, MainActivity.class);
+        startActivity(refresh);
     }
 }
