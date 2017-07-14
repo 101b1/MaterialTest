@@ -7,27 +7,31 @@
         <item>Настройки</item>
         <item>О нас</item>
     </string-array>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="about_string">
         "       Это приложение было разработано
         сообществом I Love It Hard
         2017"</string>
-
     <string-array name="settings_list">
         <item>Тема</item>
         <item>Путь загрузки</item>
         <item>Язык</item>
         <item>Выход</item>
     </string-array>
-
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="home_string">Welcome to the home page!</string>
-
+    <string name="home_string">Добро пожаловать на домашнюю!</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string name="dialog_fragment">Dialogs here</string>
-
-    <string name="friends_fragment">Friends here</string>
+    <string name="hello_blank_fragment">Здесь приветствие</string>
+    <string name="dialog_fragment">Здесь диалоги</string>
+    <string name="friends_fragment">Здесь друзья</string>
+    <string-array name="lang_entries">
+        <item>Русский</item>
+        <item>Английский</item>
+    </string-array>
+    <string-array name="pref_theme_entries">
+        <item>Главная тема</item>
+        <item>Альтернативная тема</item>
+    </string-array>
+    <string name="pref_lang_title">Язык</string>
+    <string name="pref_theme_title">Тема</string>
 </resources>

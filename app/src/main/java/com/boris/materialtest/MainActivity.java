@@ -2,6 +2,8 @@ package com.boris.materialtest;
 
 import android.app.DialogFragment;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.Activity;
@@ -12,20 +14,22 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ShareActionProvider;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.Toast;
+import java.util.Locale;
 
 public class MainActivity extends Activity {
     public static final String PREFS_FILE = "MaterialTestPrefs";
+    static final String PREF_LANG = "pref_lang";
+    static final String PREF_THEME = "pref_theme";
+    private boolean preferenceChanged = true;
     private String[] drawerItems;
     private ListView drawerList;
+    private Locale currentLocale;
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener{
         @Override
@@ -72,30 +76,71 @@ public class MainActivity extends Activity {
 
         }
 
-        private void changeBarTitle(int position)
+    private void changeBarTitle(int position)
+    {
+        String title;
+        if (position==0)
         {
-            String title;
-            if (position==0)
-            {
-                title = getResources().getString(R.string.app_name);
-            } else
-            {
-                title = drawerItems[position];
-            }
-            getActionBar().setTitle(title);
+            title = getResources().getString(R.string.app_name);
+        } else
+        {
+            title = drawerItems[position];
         }
+        getActionBar().setTitle(title);
+    }
 
+    private SharedPreferences.OnSharedPreferenceChangeListener preferencesChangeListener =
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                    preferenceChanged = true;
+
+                    if (key.equals(PREF_LANG))
+                    {
+                        setLanguage(sharedPreferences);
+                    }
+                    else if (key.equals(PREF_THEME))
+                    {
+                        setTheme(sharedPreferences);
+                    }
+                }
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         SharedPreferences prefs = getSharedPreferences(PREFS_FILE,0);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener(preferencesChangeListener);
         setTheme(prefs.getInt("Theme",0));
         drawerItems = getResources().getStringArray(R.array.drawer_items);
         drawerList = (ListView)findViewById(R.id.drawer);
         drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerItems));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+
+    }
+
+
+
+    private void setLanguage(SharedPreferences preferences)
+    {
+        String newLocale = preferences.getString(PREF_LANG, null);
+        currentLocale = new Locale(newLocale);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = currentLocale;
+        res.updateConfiguration(conf, dm);
+        Intent refresh = new Intent(this, MainActivity.class);
+        startActivity(refresh);
+    }
+
+    private void  setTheme(SharedPreferences preferences)
+    {
 
     }
 }

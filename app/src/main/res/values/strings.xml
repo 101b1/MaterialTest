@@ -7,27 +7,43 @@
         <item>Preferences</item>
         <item>About</item>
     </string-array>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="about_string">
         "       This app is made by
         I Love It Hard Society
         2017"</string>
-
     <string-array name="settings_list">
         <item>Theme</item>
         <item>Download directory</item>
         <item>Language</item>
         <item>Logout</item>
     </string-array>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="home_string">Welcome to the home page!</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="pref_theme_title">Theme</string>
+    <string-array name="pref_theme_entries">
+        <item>Main theme</item>
+        <item>Alternative theme</item>
+    </string-array>
+    <string-array name="pref_theme_values">
+        <item>AppTheme</item>
+        <item>SecondTheme</item>
+    </string-array>
+    <string name="pref_theme_default_val" translatable="false">AppTheme</string>
     <string name="dialog_fragment">Dialogs here</string>
-
     <string name="friends_fragment">Friends here</string>
+    <string name="pref_lang_title">Language</string>
+    <string-array name="pref_lang_entries">
+        <item>Russian</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="pref_lang_values">
+        <item>ru</item>
+        <item>en</item>
+    </string-array>
+    <string name="pref_lang_default_val" translatable="false">ru</string>
+    <string name="pref_lang_key" translatable="false">pref_lang</string>
+    <string name="pref_theme_key" translatable="false">pref_theme</string>
 </resources>
