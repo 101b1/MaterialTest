@@ -24,7 +24,7 @@
     <string name="hello_blank_fragment">Здесь приветствие</string>
     <string name="dialog_fragment">Здесь диалоги</string>
     <string name="friends_fragment">Здесь друзья</string>
-    <string-array name="lang_entries">
+    <string-array name="pref_lang_entries">
         <item>Русский</item>
         <item>Английский</item>
     </string-array>

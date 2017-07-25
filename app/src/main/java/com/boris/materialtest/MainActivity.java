@@ -29,9 +29,9 @@ public class MainActivity extends Activity {
     private boolean preferenceChanged = true;
     private String[] drawerItems;
     private ListView drawerList;
-    private Locale currentLocale;
+    private String currentLocale;
     private SharedPreferences sharedPreferences;
-    private preferencesChangeListener prefListener;
+    private String curTheme;
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener{
         @Override
@@ -91,58 +91,100 @@ public class MainActivity extends Activity {
         getActionBar().setTitle(title);
     }
 
-    private class preferencesChangeListener implements SharedPreferences.OnSharedPreferenceChangeListener {
+    /*private class preferencesChangeListener implements SharedPreferences.OnSharedPreferenceChangeListener {
                 @Override
                 public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                     preferenceChanged = true;
 
                     if (key.equals(PREF_LANG))
                     {
-                        setLanguage(sharedPreferences);
+                        changeLanguage(sharedPreferences);
                     }
                     else if (key.equals(PREF_THEME))
                     {
-                        setTheme(sharedPreferences);
+                        changeTheme(sharedPreferences);
                     }
                 }
-            }
+            }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        prefListener = new preferencesChangeListener();
-        sharedPreferences.registerOnSharedPreferenceChangeListener(prefListener);
+        SharedPreferences.OnSharedPreferenceChangeListener preferencesChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener(){
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                preferenceChanged = true;
 
-        setTheme(sharedPreferences.getInt("Theme",0));
+                if (key.equals(PREF_LANG))
+                {
+                    changeLanguage(sharedPreferences);
+                }
+                else if (key.equals(PREF_THEME))
+                {
+                    changeTheme(sharedPreferences);
+                }
+            }
+        };
+       /* PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        prefListener = new preferencesChangeListener();*/
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(preferencesChangeListener);
+        int theme = getThemeInt(sharedPreferences.getString(PREF_THEME, "AppTheme"));
+        setTheme(theme);
+
         drawerItems = getResources().getStringArray(R.array.drawer_items);
         drawerList = (ListView)findViewById(R.id.drawer);
         drawerList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, drawerItems));
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 
+        //SETFRAGMENT from Bundle?
+
     }
 
-    private void setLanguage(SharedPreferences preferences)
+    private void changeLanguage(SharedPreferences preferences)
     {
-        String newLocale = preferences.getString(PREF_LANG, null);
-        currentLocale = new Locale(newLocale);
+        currentLocale = preferences.getString(PREF_LANG, "ru");
+        /*currentLocale = new Locale(newLocale);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration conf = res.getConfiguration();
-        conf.locale = currentLocale;
-        res.updateConfiguration(conf, dm);
+        conf.setLocale(currentLocale);
+        getApplicationContext().createConfigurationContext(conf);*/
         Intent refresh = new Intent(this, MainActivity.class);
         startActivity(refresh);
     }
 
-    private void  setTheme(SharedPreferences preferences)
+    private void  changeTheme(SharedPreferences preferences)
     {
+        curTheme = preferences.getString(PREF_THEME, "AppTheme");
         Intent refresh = new Intent(this, MainActivity.class);
         startActivity(refresh);
     }
+
+    private int getThemeInt(String themeName)
+    {
+        if(themeName.equals(getResources().getString(R.string.pref_theme_default_val)))
+        {
+            return 0;
+        }
+        else return 1;
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_LANG, currentLocale);
+        editor.putString(PREF_THEME, curTheme);
+
+        editor.commit();
+
+    }
+
+
 }
